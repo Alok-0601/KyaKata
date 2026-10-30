@@ -35,15 +35,3 @@ export interface Scenario {
   amount: number;
   matches: boolean;
 }
-
-export interface ExplainResult {
-  status: Status;
-  deduction: Deduction | null;
-  clause: ClauseEvidence | null;
-  known: string[];
-  missing: string[];
-  scenarios: Scenario[];
-  nextQuestions: string[];
-  answerEn: string;
-  answerHinglish: string;
-}
