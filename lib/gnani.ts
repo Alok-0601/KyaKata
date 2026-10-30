@@ -32,14 +32,60 @@ function authHeaders(): Record<string, string> {
   return { [c.authHeader]: `${c.authPrefix}${c.key}` };
 }
 
+
 function pickText(json: unknown): string {
-  // Tries the common shapes; extend if the docs use another one.
   const j = json as Record<string, any>;
-  const candidates = [j?.transcript, j?.text, j?.data?.transcript, j?.data?.text, j?.result?.text, j?.results?.[0]?.transcript];
-  const hit = candidates.find((v) => typeof v === "string" && v.trim());
-  if (!hit) throw new GnaniError("STT response had no transcript field; adapt pickText() in lib/gnani.ts", 502);
-  return String(hit).trim();
+
+  // Check the documented and common response formats.
+  const candidates = [
+    j?.transcript,
+    j?.text,
+    j?.data?.transcript,
+    j?.data?.text,
+    j?.result?.transcript,
+    j?.result?.text,
+    j?.results?.[0]?.transcript,
+    j?.output?.transcript,
+    j?.output?.literal,
+  ];
+
+  const hit = candidates.find(
+    (value) => typeof value === "string"
+  );
+
+  if (typeof hit === "string") {
+    if (!hit.trim()) {
+      throw new GnaniError(
+        "Prisma received the audio but detected no speech. Please record again.",
+        502
+      );
+    }
+
+    return hit.trim();
+  }
+
+  // Do not silently hide an unexpected API response.
+  if (j?.success === false) {
+    const message =
+      j?.error?.message ??
+      j?.message ??
+      j?.detail?.[0]?.msg ??
+      "Unknown Prisma API error";
+
+    throw new GnaniError(
+      `Prisma API reported: ${message}`,
+      502
+    );
+  }
+
+  const fields = Object.keys(j ?? {}).join(", ");
+
+  throw new GnaniError(
+    `Unexpected Prisma response. Received fields: ${fields || "none"}. Check the VS Code terminal.`,
+    502
+  );
 }
+
 
 /** Prisma: audio -> text. */
 export async function transcribe(audio: Blob, filename = "audio.wav", lang?: string): Promise<string> {
@@ -65,33 +111,74 @@ export interface TtsAudio {
 }
 
 /** Timbre: text -> audio. */
-export async function synthesize(text: string, lang?: string): Promise<TtsAudio> {
-  const c = cfg();
-  if (!c.ttsUrl) throw new GnaniError("GNANI_TTS_URL is not set", 500);
 
-  // ADAPT (Timbre request): match the docs for body fields.
+export async function synthesize(
+  text: string,
+  lang?: string
+): Promise<TtsAudio> {
+  const c = cfg();
+
+  if (!c.ttsUrl) {
+    throw new GnaniError("GNANI_TTS_URL is not set", 500);
+  }
+
   const body = {
     model: c.ttsModel,
     text,
     language: lang || c.ttsLang,
     ...(c.ttsVoice ? { voice: c.ttsVoice } : {}),
+    speed: 1.0,
+    audio_config: {
+      encoding: "linear_pcm",
+      container: "wav",
+      num_channels: 1,
+      sample_rate: 48000,
+      sample_width: 2,
+    },
   };
 
   const res = await fetch(c.ttsUrl, {
     method: "POST",
-    headers: { "Content-Type": "application/json", ...authHeaders() },
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(),
+    },
     body: JSON.stringify(body),
   });
-  if (!res.ok) throw new GnaniError(`Timbre TTS failed (${res.status}): ${(await res.text()).slice(0, 300)}`, 502);
 
-  const ct = res.headers.get("content-type") || "";
-  if (ct.includes("application/json")) {
-    // ADAPT (Timbre response): some APIs return base64 audio inside JSON.
-    const j = (await res.json()) as Record<string, any>;
-    const b64: unknown = j?.audio ?? j?.audioContent ?? j?.data?.audio;
-    if (typeof b64 !== "string") throw new GnaniError("TTS JSON had no audio field; adapt synthesize() in lib/gnani.ts", 502);
-    const buf = Buffer.from(b64, "base64");
-    return { bytes: buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer, contentType: "audio/wav" };
+  if (!res.ok) {
+    const errorText = await res.text();
+
+    throw new GnaniError(
+      `Timbre TTS failed (${res.status}): ${errorText.slice(0, 400)}`,
+      502
+    );
   }
-  return { bytes: await res.arrayBuffer(), contentType: ct || "audio/wav" };
+
+  const contentType = res.headers.get("content-type") || "";
+
+  // Gnani REST should return playable audio bytes.
+  if (!contentType.toLowerCase().startsWith("audio/")) {
+    const responseText = await res.text();
+
+    throw new GnaniError(
+      `Timbre returned non-audio content (${contentType}): ${responseText.slice(0, 300)}`,
+      502
+    );
+  }
+
+  const bytes = await res.arrayBuffer();
+
+  if (bytes.byteLength === 0) {
+    throw new GnaniError(
+      "Timbre returned an empty audio file.",
+      502
+    );
+  }
+
+  return {
+    bytes,
+    contentType,
+  };
 }
+
