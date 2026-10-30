@@ -158,7 +158,7 @@ export async function POST(req: Request) {
 
         const { docs, text: documentText } = validateDocs(body.docs);
         const history = safeHistory(body.history);
-        const answerLanguage = body.answerLanguage === "en" ? "English" : "Hinglish (Hindi-English mix) unless the user clearly speaks another language";
+        const answerLanguage = body.answerLanguage === "en" ? "English" : body.answerLanguage === "hi" ? "Hindi" : "Hinglish (Hindi-English mix) unless the user clearly speaks another language";
         const systemInstruction = `${SYSTEM_RULES}\n\nRESPONSE LANGUAGE: ${answerLanguage}.\n\n${buildRetrievalHint(message, docs)}\n\nFULL UPLOADED DOCUMENT TEXT (page labels are authoritative):\n${documentText}`;
 
         const contents = [

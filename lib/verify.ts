@@ -35,6 +35,38 @@ export interface Facts {
   billTotal?: number;
 }
 
+export interface ClaimAmounts {
+  hospitalBill?: number;
+  amountClaimed?: number;
+  amountApproved?: number;
+  totalDeducted: number;
+}
+
+/** Extract only explicitly stated claim amounts from the uploaded source text. */
+export function extractClaimAmounts(docs: DocSet): ClaimAmounts {
+  const facts = extractFacts(docs);
+  let amountClaimed: number | undefined;
+  let amountApproved: number | undefined;
+
+  for (const { line } of allLines(docs.letter)) {
+    const amount = line.match(AMT);
+    if (!amount) continue;
+    if (amountClaimed === undefined && /(?:cashless\s+)?claim(?:ed)?(?:\s+amount)?/i.test(line)) {
+      amountClaimed = parseAmount(amount[1]);
+    }
+    if (amountApproved === undefined && /(?:amount\s+approved|approved\s+amount|claim\s+approved)/i.test(line)) {
+      amountApproved = parseAmount(amount[1]);
+    }
+  }
+
+  return {
+    hospitalBill: facts.billTotal,
+    amountClaimed,
+    amountApproved,
+    totalDeducted: parseDeductions(docs.letter).reduce((sum, deduction) => sum + deduction.amount, 0),
+  };
+}
+
 export function extractFacts(docs: DocSet): Facts {
   const f: Facts = {};
   for (const { line } of allLines(docs.policy)) {
