@@ -1,0 +1,51 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [6 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Length 1023 >>
+stream
+BT
+/F2 14 Tf 1 0 0 1 50 800 Tm (Sunrise Care Hospital \(FICTIONAL\) - Final Bill) Tj
+/F1 11 Tf 1 0 0 1 50 774 Tm (Bill No: SCH-DEMO-0001      Date: 12 September 2026) Tj
+/F1 11 Tf 1 0 0 1 50 756 Tm (Patient: Demo Patient \(Synthetic\)      Policy No: DEMO-POL-000000) Tj
+/F1 11 Tf 1 0 0 1 50 738 Tm (Admission: 06 September 2026      Discharge: 11 September 2026) Tj
+/F1 11 Tf 1 0 0 1 50 720 Tm () Tj
+/F1 11 Tf 1 0 0 1 50 702 Tm (Charges) Tj
+/F1 11 Tf 1 0 0 1 50 684 Tm (Room Rent \(Deluxe Room\): 5 days x Rs. 8,000 per day = Rs. 40,000) Tj
+/F1 11 Tf 1 0 0 1 50 666 Tm (Doctor and Consultant Fees: Rs. 20,000) Tj
+/F1 11 Tf 1 0 0 1 50 648 Tm (Operation Theatre Charges: Rs. 30,000) Tj
+/F1 11 Tf 1 0 0 1 50 630 Tm (Medicines and Consumables: Rs. 12,000) Tj
+/F1 11 Tf 1 0 0 1 50 612 Tm (Diagnostics and Miscellaneous: Rs. 8,000) Tj
+/F1 11 Tf 1 0 0 1 50 594 Tm () Tj
+/F1 11 Tf 1 0 0 1 50 576 Tm (Total Claimed Amount: Rs. 1,10,000) Tj
+/F1 11 Tf 1 0 0 1 50 558 Tm (This is a synthetic document created for a public demo.) Tj
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 5 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000185 00000 n 
+0000000260 00000 n 
+0000001335 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+1471
+%%EOF

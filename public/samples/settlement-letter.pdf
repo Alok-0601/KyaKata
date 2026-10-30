@@ -1,0 +1,50 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [6 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Length 958 >>
+stream
+BT
+/F2 14 Tf 1 0 0 1 50 800 Tm (Demo Health Insurance Co. \(FICTIONAL\) - Claim Settlement Letter) Tj
+/F1 11 Tf 1 0 0 1 50 774 Tm (Claim No: DEMO-CLM-0001      Date: 28 September 2026) Tj
+/F1 11 Tf 1 0 0 1 50 756 Tm (Policy No: DEMO-POL-000000      Insured: Demo Patient \(Synthetic\)) Tj
+/F1 11 Tf 1 0 0 1 50 738 Tm () Tj
+/F1 11 Tf 1 0 0 1 50 720 Tm (Dear Policyholder,) Tj
+/F1 11 Tf 1 0 0 1 50 702 Tm (We have processed your cashless claim of Rs. 1,10,000.) Tj
+/F1 11 Tf 1 0 0 1 50 684 Tm (The following deductions have been applied:) Tj
+/F1 11 Tf 1 0 0 1 50 666 Tm () Tj
+/F1 11 Tf 1 0 0 1 50 648 Tm (Deduction 1: Room rent - proportionate deduction as per policy terms - Rs. 28,000) Tj
+/F1 11 Tf 1 0 0 1 50 630 Tm () Tj
+/F1 11 Tf 1 0 0 1 50 612 Tm (Amount approved: Rs. 82,000) Tj
+/F1 11 Tf 1 0 0 1 50 594 Tm (For queries, please refer to your policy wording.) Tj
+/F1 11 Tf 1 0 0 1 50 576 Tm (This is a synthetic document created for a public demo.) Tj
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 5 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000185 00000 n 
+0000000260 00000 n 
+0000001269 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+1405
+%%EOF
