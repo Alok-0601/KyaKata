@@ -204,12 +204,11 @@ export default function Home() {
   }, [messages, busy]);
 
   useEffect(() => {
-    return () => {
-      if (recRef.current?.state !== "inactive") recRef.current?.stop();
-      audioRef.current?.pause();
-      microphoneStream?.getTracks().forEach((track) => track.stop());
-    };
-  }, [microphoneStream]);
+  return () => {
+    if (recRef.current && recRef.current.state !== "inactive") recRef.current.stop();
+    audioRef.current?.pause();
+  };
+}, []);
 
   useEffect(() => () => {
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
